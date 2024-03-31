@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Age Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    p.error {
+        color: #ff0000;
+        font-size: 14px;
+        margin-top: -10px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Advanced Age Calculator</h2>
+    <input type="number" id="year" placeholder="Enter year of birth (YYYY)" required>
+    <input type="number" id="month" placeholder="Enter month of birth (MM)" required>
+    <input type="number" id="day" placeholder="Enter day of birth (DD)" required>
+    <button onclick="calculateAge()">Calculate Age</button>
+    <p id="result"></p>
+    <p class="error" id="error-message"></p>
+</div>
+
+<script>
+function calculateAge() {
+    var yearOfBirth = parseInt(document.getElementById("year").value);
+    var monthOfBirth = parseInt(document.getElementById("month").value);
+    var dayOfBirth = parseInt(document.getElementById("day").value);
+
+    var today = new Date();
+    var currentYear = today.getFullYear();
+    var currentMonth = today.getMonth() + 1; // JavaScript months are 0-based
+    var currentDay = today.getDate();
+
+    if (isNaN(yearOfBirth) || isNaN(monthOfBirth) || isNaN(dayOfBirth)) {
+        document.getElementById("error-message").innerHTML = "Please enter valid numbers for year, month, and day.";
+        document.getElementById("result").innerHTML = "";
+        return;
+    }
+
+    if (yearOfBirth > currentYear || yearOfBirth < 1900) {
+        document.getElementById("error-message").innerHTML = "Please enter a valid year.";
+        document.getElementById("result").innerHTML = "";
+        return;
+    }
+
+    if (monthOfBirth < 1 || monthOfBirth > 12) {
+        document.getElementById("error-message").innerHTML = "Please enter a valid month (1-12).";
+        document.getElementById("result").innerHTML = "";
+        return;
+    }
+
+    var daysInMonth = new Date(yearOfBirth, monthOfBirth, 0).getDate();
+    if (dayOfBirth < 1 || dayOfBirth > daysInMonth) {
+        document.getElementById("error-message").innerHTML = "Please enter a valid day for the selected month.";
+        document.getElementById("result").innerHTML = "";
+        return;
+    }
+
+    var birthDate = new Date(yearOfBirth, monthOfBirth - 1, dayOfBirth);
+    var age = currentYear - birthDate.getFullYear();
+
+    if ((currentMonth < monthOfBirth) || (currentMonth === monthOfBirth && currentDay < dayOfBirth)) {
+        age--;
+    }
+
+    document.getElementById("error-message").innerHTML = "";
+    document.getElementById("result").innerHTML = "Your age is: " + age;
+}
+</script>
+
+</body>
+</html>
